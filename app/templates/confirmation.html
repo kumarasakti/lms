@@ -1,0 +1,82 @@
+{% include 'components/header.html' %}
+
+{% if borrowed_book_ids %}
+<section class="text-gray-600 body-font">
+    <div class="container px-2 py-18 mx-auto flex flex-wrap items-center">
+        <div class="flex flex-wrap w-full px-4 mt-2 mb-4">
+            <div class="lg:w-1/2 w-full mb-6 lg:mb-0">
+                <h1 class="sm:text-3xl text-2xl font-black title-font mb-2 text-gray-900">Konfirmasi Peminjaman</h1>
+                <div class="h-1 w-20 bg-indigo-500 rounded"></div>
+            </div>
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-3">
+            <div class="col-span-2">
+                <div class="flex flex-wrap">
+                    <?php foreach ($finalOrders as $order) : ?>
+                    {% for book_id in borrowed_book_ids %}
+                    <div class="p-4 md:w-1/1">
+                        <div class="w-full border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden float-center">
+                            <div class="flex flex-wrap">
+                                <img class="lg:h-28  lg:w-28 md:h-36 md:h-36 object-cover object-center"
+                                     src="{{ library.getBook(book_id).getThumbnail() }}" alt="cover">
+                                <div class="p-5">
+                                    <h2 class="tracking-widest text-xs title-font font-bold text-indigo-500 mb-1">{{
+                                        library.getBook(book_id).getCategory() }}</h2>
+                                    <h1 class="title-font text-lg font-medium text-gray-900">{{
+                                        library.getBook(book_id).getJudulBuku() }}</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-span-1">
+                <div class="flex flex-col ml-4 mr-4 lg:ml-0 lg:mr-12 mt-2 lg:mt-0">
+                    <form method="post" action="/confirm_success">
+                        <h2 class="text-gray-900 text-lg mb-1 font-bold title-font">Rincian Peminjaman</h2>
+                        <p class="leading-relaxed mb-5 text-gray-600">Total buku yang kamu pinjam adalah sebanyak <b>{{
+                            borrowed_book_ids.size }} buah</b></p>
+                        <div class="relative mb-4">
+                            <label for="name" class="leading-7 text-sm text-gray-600">Nama Peminjam</label>
+                            <input type="text" id="name" name="name" value="{{ student.getName() }}"
+                                   class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out font-light"
+                                   placeholder="Masukkan nama peminjam" disabled required>
+                        </div>
+                        <div class="relative mb-4">
+                            <label for="name" class="leading-7 text-sm text-gray-600">Pengawas Perpustakaan</label>
+                            <select id="librarian" name="librarian" class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-2 leading-8 transition-colors duration-200 ease-in-out font-light" required>
+                                {% for librarian in library.getLibrarians() %}
+                                    <option>{{ librarian.getName() }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="relative mb-4">
+                            <label for="name" class="leading-7 text-sm text-gray-600">Durasi Peminjaman</label>
+                            <select id="duration" name="duration" class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-2 leading-8 transition-colors duration-200 ease-in-out font-light" required>
+                                <option>1 minggu</option>
+                                <option>2 minggu</option>
+                            </select>
+                        </div>
+                        <button class="w-full mb-2 text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">
+                            Konfirmasi Peminjaman
+                        </button>
+                    </form>
+                    <a href="/book_list">
+                        <button class="w-full text-white bg-gray-500 border-0 py-2 px-6 focus:outline-none hover:bg-gray-600 rounded text-lg">
+                            Batalkan
+                        </button>
+                    </a>
+                    <p class="text-xs text-gray-500 mt-3">Buku hanya boleh dipinjam maksimal selama 2 minggu.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% else %}
+<div class="mt-4 text-center text-lg">
+    <span>😥 Aduh, kayanya kamu lupa pinjem buku deh...</span>
+</div>
+{% endif %}
+
+{% include 'components/footer.html' %}
