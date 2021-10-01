@@ -3,7 +3,7 @@
 </a>
 
 # 📖 lms
-Library Management System for Final Project, made with Flask (Python 3.9)
+Library Management System for Final Project Object Oriented Programming Course at College, made with Flask (Python 3.9)
 
 ## 📥 Deployment
 
